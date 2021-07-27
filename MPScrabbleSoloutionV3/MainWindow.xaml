@@ -1,0 +1,572 @@
+﻿<Window x:Class="MPScrabbleSoloutionV3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MP Scrabble Solution" Height="550" Width="800" WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <!-- How Many Players -->
+        <StackPanel Grid.Column="0" Margin="10 15">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="How many Players?" FontWeight="Bold" />
+                <RadioButton GroupName="PlayerNbr" x:Name="rbPN2" Margin="5 5 0 0" Content="2" Click="rbPlayerNbr_Click" IsChecked="True" />
+                <RadioButton GroupName="PlayerNbr" x:Name="rbPN3" Margin="5 5 0 0" Content="3" Click="rbPlayerNbr_Click" />
+                <RadioButton GroupName="PlayerNbr" x:Name="rbPN4" Margin="5 5 0 0" Content="4" Click="rbPlayerNbr_Click" />
+                <Button x:Name="btnInfo" Margin="5 0 0 0" BorderBrush="White" Background="White" Click="btnInfo_Click" ToolTip="Read Me">
+                    <fa:ImageAwesome Icon="InfoCircle" Width="20" />
+                </Button>
+            </StackPanel>
+            <!-- Which one am I -->
+            <StackPanel Orientation="Horizontal" Margin="0 15">
+                <Label Content="Which Player are You?" FontWeight="Bold" />
+                <RadioButton GroupName="CurrentPlayer" x:Name="rbCP1" Margin="4 5 0 0" Content="1" IsChecked="True" Click="rbCurrentPlayer_Click" />
+                <RadioButton GroupName="CurrentPlayer" x:Name="rbCP2" Margin="4 5 0 0" Content="2" Click="rbCurrentPlayer_Click" />
+                <RadioButton GroupName="CurrentPlayer" x:Name="rbCP3" Margin="4 5 0 0" Content="3" Click="rbCurrentPlayer_Click" />
+                <RadioButton GroupName="CurrentPlayer" x:Name="rbCP4" Margin="4 5 0 0" Content="4" Click="rbCurrentPlayer_Click" />
+            </StackPanel>
+
+            <!-- Random Numbers -->
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnGenerate" Content="Generate" FontWeight="Bold" Width="75" Height="26" Click="btnGenerate_Click" ToolTip="Press to generate random numbers" />
+                <TextBox x:Name="lbS00" Text="0" Margin="5 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS01" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS02" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS03" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS04" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS05" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS06" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS07" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS08" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBox x:Name="lbS09" Text="0" Margin="1 0 0 0" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </StackPanel>
+            <!-- Shunt Button -->
+            <Button x:Name="btnShunt" Content="Shunt" FontWeight="Bold" Width="75" Height="26" Margin="-170 15 0 0" Click="btnShunt_Click" ToolTip="Press to shunt the letters by the random numbers." />
+            <!-- Shuffle Button -->
+            <StackPanel Orientation="Horizontal" Margin="0 15">
+                <Button x:Name="btnShuffle" Content="Shuffle" FontWeight="Bold" Width="75" Height="26" Click="btnShuffle_Click" ToolTip="Press to shuffle the letters" />
+                <ComboBox x:Name="cbSh1" Width="45" Margin="5 0 0 0">
+                    <ComboBoxItem Content="2" IsSelected="True" />
+                    <ComboBoxItem Content="3" />
+                    <ComboBoxItem Content="4" />
+                    <ComboBoxItem Content="5" />
+                </ComboBox>
+                <ComboBox x:Name="cbSh2" Width="45" Margin="5 0 0 0">
+                    <ComboBoxItem Content="2" />
+                    <ComboBoxItem Content="3" IsSelected="True" />
+                    <ComboBoxItem Content="4" />
+                    <ComboBoxItem Content="5" />
+                </ComboBox>
+            </StackPanel>
+            <!-- Letter Bag -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Letter Bag" FontWeight="Bold" />
+                <Label x:Name="lbBagCount" Content="(100)" />
+            </StackPanel>
+            <TextBox x:Name="tbBag" Height="155" Width="240" FontFamily="Courier New" />
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 15">
+                <Button x:Name="bntPrtLog" Content="Print Log" Width="100" Margin="10" Click="bntPrtLog_Click" ToolTip="Will print a log of the game." />
+                <Button x:Name="bntReset" Content="Reset" Width="100" Margin="10" Click="bntReset_Click" ToolTip="Press to start a new game" />
+            </StackPanel>
+            <!-- Status Bar -->
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom" Grid.Column="0" Margin="0,0,-530,0">
+                    <StatusBarItem Width="746">
+                        <TextBlock Name="lblStatusBarText" />
+                    </StatusBarItem>
+                </StatusBar>
+            </DockPanel>
+        </StackPanel>
+
+        <!-- Player Section -->
+
+        <!-- Player 1 -->
+        <StackPanel Grid.Column="1" Margin="10 15">
+            <Border Background="Pink" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                    <TextBox Name="tbPlayer1" Text="Player 1" VerticalAlignment="Center" Width="60" Margin="0 0 0 0" TextChanged="tbPlayer1Changed" LostFocus="tbPlayer1LostFocus" />
+                    <Button x:Name="btnTake1" Content="Take" Width="50" Margin="10 0 0 0" Click="btnTake1Click" ToolTip="Press to take letters" />
+                    <ComboBox x:Name="cbTake1" Width="45" Margin="10 0 0 0" ToolTip="Select number of letter to take">
+                        <ComboBoxItem Content="0" IsSelected="True" />
+                        <ComboBoxItem Content="1" />
+                        <ComboBoxItem Content="2" />
+                        <ComboBoxItem Content="3" />
+                        <ComboBoxItem Content="4" />
+                        <ComboBoxItem Content="5" />
+                        <ComboBoxItem Content="6" />
+                        <ComboBoxItem Content="7" />
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+
+            <Border Background="Pink" BorderThickness="0" Margin="2 -2 2 0">
+                <Grid  Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="1"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="2"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="3" Content="3"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="4" Content="4"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="5" Content="5"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="6" Content="6"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="7" Content="7"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="8" Content="8"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="9" Content="9"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="10" Content="10" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="0" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="1" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="2" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="3" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="5" Grid.Column="0" Content="4" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="6" Grid.Column="0" Content="5" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="6" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label x:Name="p100" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" />
+                    <Label x:Name="p101" Grid.Row="1" Grid.Column="2" />
+                    <Label x:Name="p102" Grid.Row="1" Grid.Column="3" />
+                    <Label x:Name="p103" Grid.Row="1" Grid.Column="4" />
+                    <Label x:Name="p104" Grid.Row="1" Grid.Column="5" />
+                    <Label x:Name="p105" Grid.Row="1" Grid.Column="6" />
+                    <Label x:Name="p106" Grid.Row="1" Grid.Column="7" />
+                    <Label x:Name="p107" Grid.Row="1" Grid.Column="8" />
+                    <Label x:Name="p108" Grid.Row="1" Grid.Column="9" />
+                    <Label x:Name="p109" Grid.Row="1" Grid.Column="10" />
+                    <Label x:Name="p110" Grid.Row="2" Grid.Column="1" />
+                    <Label x:Name="p111" Grid.Row="2" Grid.Column="2" />
+                    <Label x:Name="p112" Grid.Row="2" Grid.Column="3" />
+                    <Label x:Name="p113" Grid.Row="2" Grid.Column="4" />
+                    <Label x:Name="p114" Grid.Row="2" Grid.Column="5" />
+                    <Label x:Name="p115" Grid.Row="2" Grid.Column="6" />
+                    <Label x:Name="p116" Grid.Row="2" Grid.Column="7" />
+                    <Label x:Name="p117" Grid.Row="2" Grid.Column="8" />
+                    <Label x:Name="p118" Grid.Row="2" Grid.Column="9" />
+                    <Label x:Name="p119" Grid.Row="2" Grid.Column="10" />
+                    <Label x:Name="p120" Grid.Row="3" Grid.Column="1" />
+                    <Label x:Name="p121" Grid.Row="3" Grid.Column="2" />
+                    <Label x:Name="p122" Grid.Row="3" Grid.Column="3" />
+                    <Label x:Name="p123" Grid.Row="3" Grid.Column="4" />
+                    <Label x:Name="p124" Grid.Row="3" Grid.Column="5" />
+                    <Label x:Name="p125" Grid.Row="3" Grid.Column="6" />
+                    <Label x:Name="p126" Grid.Row="3" Grid.Column="7" />
+                    <Label x:Name="p127" Grid.Row="3" Grid.Column="8" />
+                    <Label x:Name="p128" Grid.Row="3" Grid.Column="9" />
+                    <Label x:Name="p129" Grid.Row="3" Grid.Column="10" />
+                    <Label x:Name="p130" Grid.Row="4" Grid.Column="1" />
+                    <Label x:Name="p131" Grid.Row="4" Grid.Column="2" />
+                    <Label x:Name="p132" Grid.Row="4" Grid.Column="3" />
+                    <Label x:Name="p133" Grid.Row="4" Grid.Column="4" />
+                    <Label x:Name="p134" Grid.Row="4" Grid.Column="5" />
+                    <Label x:Name="p135" Grid.Row="4" Grid.Column="6" />
+                    <Label x:Name="p136" Grid.Row="4" Grid.Column="7" />
+                    <Label x:Name="p137" Grid.Row="4" Grid.Column="8" />
+                    <Label x:Name="p138" Grid.Row="4" Grid.Column="9" />
+                    <Label x:Name="p139" Grid.Row="4" Grid.Column="10" />
+                    <Label x:Name="p140" Grid.Row="5" Grid.Column="1" />
+                    <Label x:Name="p141" Grid.Row="5" Grid.Column="2" />
+                    <Label x:Name="p142" Grid.Row="5" Grid.Column="3" />
+                    <Label x:Name="p143" Grid.Row="5" Grid.Column="4" />
+                    <Label x:Name="p144" Grid.Row="5" Grid.Column="5" />
+                    <Label x:Name="p145" Grid.Row="5" Grid.Column="6" />
+                    <Label x:Name="p146" Grid.Row="5" Grid.Column="7" />
+                    <Label x:Name="p147" Grid.Row="5" Grid.Column="8" />
+                    <Label x:Name="p148" Grid.Row="5" Grid.Column="9" />
+                    <Label x:Name="p149" Grid.Row="5" Grid.Column="10" />
+                    <Label x:Name="p150" Grid.Row="6" Grid.Column="1" />
+                    <Label x:Name="p151" Grid.Row="6" Grid.Column="2" />
+                    <Label x:Name="p152" Grid.Row="6" Grid.Column="3" />
+                    <Label x:Name="p153" Grid.Row="6" Grid.Column="4" />
+                    <Label x:Name="p154" Grid.Row="6" Grid.Column="5" />
+                    <Label x:Name="p155" Grid.Row="6" Grid.Column="6" />
+                    <Label x:Name="p156" Grid.Row="6" Grid.Column="7" />
+                    <Label x:Name="p157" Grid.Row="6" Grid.Column="8" />
+                    <Label x:Name="p158" Grid.Row="6" Grid.Column="9" />
+                    <Label x:Name="p159" Grid.Row="6" Grid.Column="10" />
+                    <Label x:Name="p160" Grid.Row="7" Grid.Column="1" />
+                    <Label x:Name="p161" Grid.Row="7" Grid.Column="2" />
+                    <Label x:Name="p162" Grid.Row="7" Grid.Column="3" />
+                    <Label x:Name="p163" Grid.Row="7" Grid.Column="4" />
+                    <Label x:Name="p164" Grid.Row="7" Grid.Column="5" />
+                    <Label x:Name="p165" Grid.Row="7" Grid.Column="6" />
+                    <Label x:Name="p166" Grid.Row="7" Grid.Column="7" />
+                    <Label x:Name="p167" Grid.Row="7" Grid.Column="8" />
+                    <Label x:Name="p168" Grid.Row="7" Grid.Column="9" />
+                    <Label x:Name="p169" Grid.Row="7" Grid.Column="10" />
+                </Grid>
+            </Border>
+
+            <!-- Player 3 -->
+            <Border Background="PaleGreen" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                    <TextBox Name="tbPlayer3" Text="Player 3" VerticalAlignment="Center" Width="60" Margin="0 0 0 0" TextChanged="tbPlayer3Changed" LostFocus="tbPlayer3LostFocus" />
+                    <Button x:Name="btnTake3" Content="Take" Width="50" Margin="10 0 0 0" Click="btnTake3Click" ToolTip="Press to take letters" />
+                    <ComboBox x:Name="cbTake3" Width="45" Margin="10 0 0 0" ToolTip="Select number of letter to take">
+                        <ComboBoxItem Content="0" IsSelected="True" />
+                        <ComboBoxItem Content="1" />
+                        <ComboBoxItem Content="2" />
+                        <ComboBoxItem Content="3" />
+                        <ComboBoxItem Content="4" />
+                        <ComboBoxItem Content="5" />
+                        <ComboBoxItem Content="6" />
+                        <ComboBoxItem Content="7" />
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <Border Background="PaleGreen" BorderThickness="0" Margin="2 -2 2 0">
+                <Grid  Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="1"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="2"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="3" Content="3"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="4" Content="4"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="5" Content="5"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="6" Content="6"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="7" Content="7"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="8" Content="8"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="9" Content="9"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="10" Content="10" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="0" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="1" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="2" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="3" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label x:Name="p300" Grid.Row="1" Grid.Column="1" />
+                    <Label x:Name="p301" Grid.Row="1" Grid.Column="2" />
+                    <Label x:Name="p302" Grid.Row="1" Grid.Column="3" />
+                    <Label x:Name="p303" Grid.Row="1" Grid.Column="4" />
+                    <Label x:Name="p304" Grid.Row="1" Grid.Column="5" />
+                    <Label x:Name="p305" Grid.Row="1" Grid.Column="6" />
+                    <Label x:Name="p306" Grid.Row="1" Grid.Column="7" />
+                    <Label x:Name="p307" Grid.Row="1" Grid.Column="8" />
+                    <Label x:Name="p308" Grid.Row="1" Grid.Column="9" />
+                    <Label x:Name="p309" Grid.Row="1" Grid.Column="10" />
+                    <Label x:Name="p310" Grid.Row="2" Grid.Column="1" />
+                    <Label x:Name="p311" Grid.Row="2" Grid.Column="2" />
+                    <Label x:Name="p312" Grid.Row="2" Grid.Column="3" />
+                    <Label x:Name="p313" Grid.Row="2" Grid.Column="4" />
+                    <Label x:Name="p314" Grid.Row="2" Grid.Column="5" />
+                    <Label x:Name="p315" Grid.Row="2" Grid.Column="6" />
+                    <Label x:Name="p316" Grid.Row="2" Grid.Column="7" />
+                    <Label x:Name="p317" Grid.Row="2" Grid.Column="8" />
+                    <Label x:Name="p318" Grid.Row="2" Grid.Column="9" />
+                    <Label x:Name="p319" Grid.Row="2" Grid.Column="10" />
+                    <Label x:Name="p320" Grid.Row="3" Grid.Column="1" />
+                    <Label x:Name="p321" Grid.Row="3" Grid.Column="2" />
+                    <Label x:Name="p322" Grid.Row="3" Grid.Column="3" />
+                    <Label x:Name="p323" Grid.Row="3" Grid.Column="4" />
+                    <Label x:Name="p324" Grid.Row="3" Grid.Column="5" />
+                    <Label x:Name="p325" Grid.Row="3" Grid.Column="6" />
+                    <Label x:Name="p326" Grid.Row="3" Grid.Column="7" />
+                    <Label x:Name="p327" Grid.Row="3" Grid.Column="8" />
+                    <Label x:Name="p328" Grid.Row="3" Grid.Column="9" />
+                    <Label x:Name="p329" Grid.Row="3" Grid.Column="10" />
+                    <Label x:Name="p330" Grid.Row="4" Grid.Column="1" />
+                    <Label x:Name="p331" Grid.Row="4" Grid.Column="2" />
+                    <Label x:Name="p332" Grid.Row="4" Grid.Column="3" />
+                    <Label x:Name="p333" Grid.Row="4" Grid.Column="4" />
+                    <Label x:Name="p334" Grid.Row="4" Grid.Column="5" />
+                    <Label x:Name="p335" Grid.Row="4" Grid.Column="6" />
+                    <Label x:Name="p336" Grid.Row="4" Grid.Column="7" />
+                    <Label x:Name="p337" Grid.Row="4" Grid.Column="8" />
+                    <Label x:Name="p338" Grid.Row="4" Grid.Column="9" />
+                    <Label x:Name="p339" Grid.Row="4" Grid.Column="10" />
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Margin="10 15">
+            <!-- Player 2 -->
+            <Border Background="LightBlue" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                    <TextBox Name="tbPlayer2" Text="Player 2" VerticalAlignment="Center" Width="60" Margin="0 0 0 0" TextChanged="tbPlayer2Changed" LostFocus="tbPlayer2LostFocus" />
+                    <Button x:Name="btnTake2" Content="Take" Width="50" Margin="10 0 0 0" Click="btnTake2Click" ToolTip="Press to take letters" />
+                    <ComboBox x:Name="cbTake2" Width="45" Margin="10 0 0 0" ToolTip="Select number of letter to take">
+                        <ComboBoxItem Content="0" IsSelected="True" />
+                        <ComboBoxItem Content="1" />
+                        <ComboBoxItem Content="2" />
+                        <ComboBoxItem Content="3" />
+                        <ComboBoxItem Content="4" />
+                        <ComboBoxItem Content="5" />
+                        <ComboBoxItem Content="6" />
+                        <ComboBoxItem Content="7" />
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <Border Background="LightBlue" BorderThickness="0" Margin="2 -2 2 0">
+                <Grid  Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="1" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="2" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="3" Content="3" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="4" Content="4" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="5" Content="5" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="6" Content="6" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="7" Content="7" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="8" Content="8" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="9" Content="9" FontSize="10"  HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="10" Content="10" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="0" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="1" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="2" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="3" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="5" Grid.Column="0" Content="4" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="6" Grid.Column="0" Content="5" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="6" FontSize="10" HorizontalAlignment="Center" FontWeight="Medium" />
+
+                    <Label x:Name="p200" Grid.Row="1" Grid.Column="1" />
+                    <Label x:Name="p201" Grid.Row="1" Grid.Column="2" />
+                    <Label x:Name="p202" Grid.Row="1" Grid.Column="3" />
+                    <Label x:Name="p203" Grid.Row="1" Grid.Column="4" />
+                    <Label x:Name="p204" Grid.Row="1" Grid.Column="5" />
+                    <Label x:Name="p205" Grid.Row="1" Grid.Column="6" />
+                    <Label x:Name="p206" Grid.Row="1" Grid.Column="7" />
+                    <Label x:Name="p207" Grid.Row="1" Grid.Column="8" />
+                    <Label x:Name="p208" Grid.Row="1" Grid.Column="9" />
+                    <Label x:Name="p209" Grid.Row="1" Grid.Column="10" />
+                    <Label x:Name="p210" Grid.Row="2" Grid.Column="1" />
+                    <Label x:Name="p211" Grid.Row="2" Grid.Column="2" />
+                    <Label x:Name="p212" Grid.Row="2" Grid.Column="3" />
+                    <Label x:Name="p213" Grid.Row="2" Grid.Column="4" />
+                    <Label x:Name="p214" Grid.Row="2" Grid.Column="5" />
+                    <Label x:Name="p215" Grid.Row="2" Grid.Column="6" />
+                    <Label x:Name="p216" Grid.Row="2" Grid.Column="7" />
+                    <Label x:Name="p217" Grid.Row="2" Grid.Column="8" />
+                    <Label x:Name="p218" Grid.Row="2" Grid.Column="9" />
+                    <Label x:Name="p219" Grid.Row="2" Grid.Column="10" />
+                    <Label x:Name="p220" Grid.Row="3" Grid.Column="1" />
+                    <Label x:Name="p221" Grid.Row="3" Grid.Column="2" />
+                    <Label x:Name="p222" Grid.Row="3" Grid.Column="3" />
+                    <Label x:Name="p223" Grid.Row="3" Grid.Column="4" />
+                    <Label x:Name="p224" Grid.Row="3" Grid.Column="5" />
+                    <Label x:Name="p225" Grid.Row="3" Grid.Column="6" />
+                    <Label x:Name="p226" Grid.Row="3" Grid.Column="7" />
+                    <Label x:Name="p227" Grid.Row="3" Grid.Column="8" />
+                    <Label x:Name="p228" Grid.Row="3" Grid.Column="9" />
+                    <Label x:Name="p229" Grid.Row="3" Grid.Column="10" />
+                    <Label x:Name="p230" Grid.Row="4" Grid.Column="1" />
+                    <Label x:Name="p231" Grid.Row="4" Grid.Column="2" />
+                    <Label x:Name="p232" Grid.Row="4" Grid.Column="3" />
+                    <Label x:Name="p233" Grid.Row="4" Grid.Column="4" />
+                    <Label x:Name="p234" Grid.Row="4" Grid.Column="5" />
+                    <Label x:Name="p235" Grid.Row="4" Grid.Column="6" />
+                    <Label x:Name="p236" Grid.Row="4" Grid.Column="7" />
+                    <Label x:Name="p237" Grid.Row="4" Grid.Column="8" />
+                    <Label x:Name="p238" Grid.Row="4" Grid.Column="9" />
+                    <Label x:Name="p239" Grid.Row="4" Grid.Column="10" />
+                    <Label x:Name="p240" Grid.Row="5" Grid.Column="1" />
+                    <Label x:Name="p241" Grid.Row="5" Grid.Column="2" />
+                    <Label x:Name="p242" Grid.Row="5" Grid.Column="3" />
+                    <Label x:Name="p243" Grid.Row="5" Grid.Column="4" />
+                    <Label x:Name="p244" Grid.Row="5" Grid.Column="5" />
+                    <Label x:Name="p245" Grid.Row="5" Grid.Column="6" />
+                    <Label x:Name="p246" Grid.Row="5" Grid.Column="7" />
+                    <Label x:Name="p247" Grid.Row="5" Grid.Column="8" />
+                    <Label x:Name="p248" Grid.Row="5" Grid.Column="9" />
+                    <Label x:Name="p249" Grid.Row="5" Grid.Column="10" />
+                    <Label x:Name="p250" Grid.Row="6" Grid.Column="1" />
+                    <Label x:Name="p251" Grid.Row="6" Grid.Column="2" />
+                    <Label x:Name="p252" Grid.Row="6" Grid.Column="3" />
+                    <Label x:Name="p253" Grid.Row="6" Grid.Column="4" />
+                    <Label x:Name="p254" Grid.Row="6" Grid.Column="5" />
+                    <Label x:Name="p255" Grid.Row="6" Grid.Column="6" />
+                    <Label x:Name="p256" Grid.Row="6" Grid.Column="7" />
+                    <Label x:Name="p257" Grid.Row="6" Grid.Column="8" />
+                    <Label x:Name="p258" Grid.Row="6" Grid.Column="9" />
+                    <Label x:Name="p259" Grid.Row="6" Grid.Column="10" />
+                    <Label x:Name="p260" Grid.Row="7" Grid.Column="1" />
+                    <Label x:Name="p261" Grid.Row="7" Grid.Column="2" />
+                    <Label x:Name="p262" Grid.Row="7" Grid.Column="3" />
+                    <Label x:Name="p263" Grid.Row="7" Grid.Column="4" />
+                    <Label x:Name="p264" Grid.Row="7" Grid.Column="5" />
+                    <Label x:Name="p265" Grid.Row="7" Grid.Column="6" />
+                    <Label x:Name="p266" Grid.Row="7" Grid.Column="7" />
+                    <Label x:Name="p267" Grid.Row="7" Grid.Column="8" />
+                    <Label x:Name="p268" Grid.Row="7" Grid.Column="9" />
+                    <Label x:Name="p269" Grid.Row="7" Grid.Column="10" />
+                </Grid>
+            </Border>
+
+            <!-- Player 4 -->
+            <Border Background="LightGoldenrodYellow" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                    <TextBox Name="tbPlayer4" Text="Player 4" VerticalAlignment="Center" Width="60" Margin="0 0 0 0" TextChanged="tbPlayer4Changed" LostFocus="tbPlayer4LostFocus" />
+                    <Button x:Name="btnTake4" Content="Take" Width="50" Margin="10 0 0 0" Click="btnTake4Click" ToolTip="Press to take letters" />
+                    <ComboBox x:Name="cbTake4" Width="45" Margin="10 0 0 0" ToolTip="Select number of letter to take">
+                        <ComboBoxItem Content="0" IsSelected="True" />
+                        <ComboBoxItem Content="1" />
+                        <ComboBoxItem Content="2" />
+                        <ComboBoxItem Content="3" />
+                        <ComboBoxItem Content="4" />
+                        <ComboBoxItem Content="5" />
+                        <ComboBoxItem Content="6" />
+                        <ComboBoxItem Content="7" />
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <Border Background="LightGoldenrodYellow" BorderThickness="0" Margin="2 -2 2 0">
+                <Grid  Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="1" Content="1"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="2"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="3" Content="3"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="4" Content="4"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="5" Content="5"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="6" Content="6"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="7" Content="7"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="8" Content="8"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="9" Content="9"   HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="0" Grid.Column="10" Content="10" HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="0"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="1"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="2"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="3"  HorizontalAlignment="Center" FontSize="10" FontWeight="Medium" />
+
+                    <Label x:Name="p400" Grid.Row="1" Grid.Column="1" />
+                    <Label x:Name="p401" Grid.Row="1" Grid.Column="2" />
+                    <Label x:Name="p402" Grid.Row="1" Grid.Column="3" />
+                    <Label x:Name="p403" Grid.Row="1" Grid.Column="4" />
+                    <Label x:Name="p404" Grid.Row="1" Grid.Column="5" />
+                    <Label x:Name="p405" Grid.Row="1" Grid.Column="6" />
+                    <Label x:Name="p406" Grid.Row="1" Grid.Column="7" />
+                    <Label x:Name="p407" Grid.Row="1" Grid.Column="8" />
+                    <Label x:Name="p408" Grid.Row="1" Grid.Column="9" />
+                    <Label x:Name="p409" Grid.Row="1" Grid.Column="10" />
+                    <Label x:Name="p410" Grid.Row="2" Grid.Column="1" />
+                    <Label x:Name="p411" Grid.Row="2" Grid.Column="2" />
+                    <Label x:Name="p412" Grid.Row="2" Grid.Column="3" />
+                    <Label x:Name="p413" Grid.Row="2" Grid.Column="4" />
+                    <Label x:Name="p414" Grid.Row="2" Grid.Column="5" />
+                    <Label x:Name="p415" Grid.Row="2" Grid.Column="6" />
+                    <Label x:Name="p416" Grid.Row="2" Grid.Column="7" />
+                    <Label x:Name="p417" Grid.Row="2" Grid.Column="8" />
+                    <Label x:Name="p418" Grid.Row="2" Grid.Column="9" />
+                    <Label x:Name="p419" Grid.Row="2" Grid.Column="10" />
+                    <Label x:Name="p420" Grid.Row="3" Grid.Column="1" />
+                    <Label x:Name="p421" Grid.Row="3" Grid.Column="2" />
+                    <Label x:Name="p422" Grid.Row="3" Grid.Column="3" />
+                    <Label x:Name="p423" Grid.Row="3" Grid.Column="4" />
+                    <Label x:Name="p424" Grid.Row="3" Grid.Column="5" />
+                    <Label x:Name="p425" Grid.Row="3" Grid.Column="6" />
+                    <Label x:Name="p426" Grid.Row="3" Grid.Column="7" />
+                    <Label x:Name="p427" Grid.Row="3" Grid.Column="8" />
+                    <Label x:Name="p428" Grid.Row="3" Grid.Column="9" />
+                    <Label x:Name="p429" Grid.Row="3" Grid.Column="10" />
+                    <Label x:Name="p430" Grid.Row="4" Grid.Column="1" />
+                    <Label x:Name="p431" Grid.Row="4" Grid.Column="2" />
+                    <Label x:Name="p432" Grid.Row="4" Grid.Column="3" />
+                    <Label x:Name="p433" Grid.Row="4" Grid.Column="4" />
+                    <Label x:Name="p434" Grid.Row="4" Grid.Column="5" />
+                    <Label x:Name="p435" Grid.Row="4" Grid.Column="6" />
+                    <Label x:Name="p436" Grid.Row="4" Grid.Column="7" />
+                    <Label x:Name="p437" Grid.Row="4" Grid.Column="8" />
+                    <Label x:Name="p438" Grid.Row="4" Grid.Column="9" />
+                    <Label x:Name="p439" Grid.Row="4" Grid.Column="10" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
