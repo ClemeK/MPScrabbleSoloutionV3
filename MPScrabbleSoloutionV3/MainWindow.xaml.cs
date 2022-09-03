@@ -60,7 +60,7 @@ namespace MPScrabbleSoloutionV3
                 }
             }
 
-            UpdateLog("Letters add to the Bag", "Grid initialised with letters");
+            UpdateLog("Letters added to the Bag", "Grid initialised with letters");
         }
 
         // **********************************
